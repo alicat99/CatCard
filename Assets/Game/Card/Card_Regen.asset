@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c4282ce4f96f54e96b3f3b64196fc7, type: 3}
+  m_Name: Card_Regen
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2321927273987851333, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
+  cardName: card_regen_name
+  description: card_regen_desc
+  intensity: 1

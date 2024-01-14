@@ -1,0 +1,17 @@
+
+#가장 앞 자리는 시점을 나타냅니다.
+PP00Attack => P(이전)
+AP00Attack => A(이후)
+
+#두번째 자리는 행동의 주체를 나타냅니다.
+PP00Attack => P(플레이어)
+PE00Attack => E(적)
+PS00Rotate => S(시스템)
+
+#시스템 이벤트 목록
+Rotate: Rotate
+Init: Before run field
+Del: On card destroy
+TurnEnd
+
+#System event는 이전 시점(P)이 존재하지 않을 수 있습니다.
