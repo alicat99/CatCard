@@ -3074,7 +3074,7 @@ PrefabInstance:
       objectReference: {fileID: 974091872}
     - target: {fileID: 7183652199186745493, guid: 1c8a16d54ad17834086f738a34b1734c, type: 3}
       propertyPath: cardDatas.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7183652199186745493, guid: 1c8a16d54ad17834086f738a34b1734c, type: 3}
       propertyPath: cardDatas.Array.data[0]
@@ -3088,5 +3088,9 @@ PrefabInstance:
       propertyPath: cardDatas.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: be1ed64a43fa64c49ac53a5a4fe1186c, type: 2}
+    - target: {fileID: 7183652199186745493, guid: 1c8a16d54ad17834086f738a34b1734c, type: 3}
+      propertyPath: cardDatas.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: af109bb46e1456e439f14b7f20884f6e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c8a16d54ad17834086f738a34b1734c, type: 3}

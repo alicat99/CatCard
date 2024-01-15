@@ -25,6 +25,7 @@ public class CardField : MonoBehaviour
     }
     public int cardCount { get; private set; }
     public CardFieldItem currentSlot { get => GetSlot(currentPos); }
+    public bool isRunning { get; private set; }
 
     private void Start()
     {
@@ -50,6 +51,8 @@ public class CardField : MonoBehaviour
 
     public IEnumerator RunField()
     {
+        isRunning = true;
+
         currentDir = Vector2Int.right;
         currentPos = Vector2Int.zero;
 
@@ -58,13 +61,23 @@ public class CardField : MonoBehaviour
             for (int y = 0; y < 3; y++)
             {
                 CardFieldItem item = field[x, y];
-                if (item.cardData != null && !item.isCardInitialized)
+                if (item.cardData != null)
                 {
-                    item.isCardInitialized = true;
-                    yield return CardSystem.InvokeTrigger(new Query(), $"AS{Slot2Count(new Vector2Int(x, y)):00}Init");
+                    int count = Slot2Count(new Vector2Int(x, y));
+
+                    if (!item.isCardInitialized)
+                    {
+                        item.isCardInitialized = true;
+
+                        yield return item.InitializeCard(count);
+                        yield return CardSystem.InvokeTrigger(new Query(), $"AS{count:00}Init");
+                    }
+
+                    yield return item.StartCard(count);
                 }
             }
         }
+        yield return new WaitForSeconds(0.5f);
 
         int i;
         var w = new WaitForSeconds(0.05f);
@@ -105,6 +118,11 @@ public class CardField : MonoBehaviour
             for (int y = 0; y < 3; y++)
             {
                 CardFieldItem item = field[x, y];
+                if (item.isRemaining)
+                {
+                    item.isRemaining = false;
+                    continue;
+                }
                 if (item.cardData != null)
                 {
                     var query = new Query(new Del(new Vector2Int(x, y)));
@@ -119,6 +137,8 @@ public class CardField : MonoBehaviour
 
         cardSelector.AddCard(0, GameManager.Instance.card.GetRandomCard());
         cardSelector.AddCard(0, GameManager.Instance.card.GetRandomCard());
+
+        isRunning = false;
 
         yield break;
     }
@@ -150,6 +170,11 @@ public class CardField : MonoBehaviour
         return field[pos[0], pos[1]];
     }
 
+    public CardFieldItem GetSlot(int count)
+    {
+        return GetSlot(Count2Slot(count));
+    }
+
     //temp
     private void RandomFill()
     {
@@ -157,7 +182,7 @@ public class CardField : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                if (Random.value < 0.5f)
+                if (field[i, j].cardData == null && Random.value < 0.5f)
                 {
                     SetCard(i, j, GameManager.Instance.card.GetRandomCard(), EntityType.E);
                 }

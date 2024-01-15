@@ -64,7 +64,7 @@ MonoBehaviour:
           id: 6
         m_UseFallback: 0
         m_MissingTranslationState: 1
-        m_NoTranslationFoundMessage: No translation found for '{key}' in {table.TableCollectionName}
+        m_NoTranslationFoundMessage: '{key}'
         m_SmartFormat:
           id: 7
     00000006:

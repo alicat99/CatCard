@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bab493f5254814419c1d71befde0962, type: 3}
-  m_Name: Card_AttackUp
+  m_Script: {fileID: 11500000, guid: 8f25a5cfc4014a9489a12769f6cc0aa7, type: 3}
+  m_Name: Card_Poison
   m_EditorClassIdentifier: 
-  icon: {fileID: 252699263996755252, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
-  cardName: card_attackup_name
-  description: card_attackup_desc
-  intensity: 0
+  icon: {fileID: -7482469090100382566, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
+  cardName: card_poison_name
+  description: card_poison_desc
+  intensity: 2

@@ -51,6 +51,14 @@ MonoBehaviour:
     m_Key: card_rotate_desc
     m_Metadata:
       m_Items: []
+  - m_Id: 19814408675045376
+    m_Key: card_attackup_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19816858274410496
+    m_Key: card_attackup_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

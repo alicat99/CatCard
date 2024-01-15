@@ -10,7 +10,7 @@ public class Card_Regen : CardData
         var act = new Regen(es[0], intensity);
         Query query = new Query(act);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Heal", intensity);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Regen", intensity);
         query.AddBubble(act, effect);
 
         yield return new WaitForSeconds(0.5f);

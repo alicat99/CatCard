@@ -14,4 +14,14 @@ public class CardData : ScriptableObject
     {
         yield break;
     }
+
+    public virtual IEnumerator OnInitialize(Entity[] es, int slot, int intensity)
+    {
+        yield break;
+    }
+
+    public virtual IEnumerator OnStart(Entity[] es, int slot, int intensity)
+    {
+        yield break;
+    }
 }

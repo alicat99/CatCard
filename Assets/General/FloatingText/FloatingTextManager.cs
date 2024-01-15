@@ -41,7 +41,7 @@ public class FloatingTextManager : MonoBehaviour
         objPool.InitializeSpawn(textPrefab, 10, 10, AP_enum.EmptyBehavior.ReuseOldest, AP_enum.MaxEmptyBehavior.ReuseOldest);
     }
 
-    public static void Print(string text, Vector2 pos, Color color, int size = 48, float floatingTime = 1, Transform parent = null)
+    public static void Print(string text, Vector2 pos, Color color, int size = 64, float floatingTime = 1, Transform parent = null)
     {
         if (!instance) 
         {

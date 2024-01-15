@@ -15,4 +15,5 @@ MonoBehaviour:
   targetPath: Assets/Game/UIEffectBubble/Icons
   data:
   - {fileID: 11400000, guid: 8ef96e271fece6d45bc2462b390d1d6d, type: 2}
+  - {fileID: 11400000, guid: dc856729363ff5949a1a83d0881e100c, type: 2}
   - {fileID: 11400000, guid: 65d8a8e6b5526a84ba73e1e41c25a4cf, type: 2}

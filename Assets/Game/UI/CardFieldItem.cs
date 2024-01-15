@@ -39,6 +39,7 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         }
     }
     private int _intensity;
+    public bool isRemaining;
 
     private bool visibility
     {
@@ -76,7 +77,7 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         if (cardData == null)
         {
             CardSelector cardSelector = parent.cardSelector;
-            if (cardSelector.selectedItem == null)
+            if (cardSelector.selectedItem == null || parent.isRunning)
             {
                 parent.background.Deselect();
                 return;
@@ -136,6 +137,30 @@ public class CardFieldItem : MonoBehaviour, ISelectable
             es = new Entity[] { es[1], es[0] };
 
         yield return cardData.OnActivate(es, parent.slotCount, dir, intensity);
+    }
+
+    public IEnumerator InitializeCard(int slotCount)
+    {
+        var battleground = parent.battleground;
+        if (cardData == null)
+            yield break;
+        Entity[] es = battleground.es;
+        if (type == EntityType.E)
+            es = new Entity[] { es[1], es[0] };
+
+        yield return cardData.OnInitialize(es, slotCount, intensity);
+    }
+
+    public IEnumerator StartCard(int slotCount)
+    {
+        var battleground = parent.battleground;
+        if (cardData == null)
+            yield break;
+        Entity[] es = battleground.es;
+        if (type == EntityType.E)
+            es = new Entity[] { es[1], es[0] };
+
+        yield return cardData.OnStart(es, slotCount, intensity);
     }
 
     public IEnumerator RotateAnim(Rotation r)

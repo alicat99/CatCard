@@ -79,6 +79,44 @@ namespace Act
         }
     }
 
+    public class Remain: IAct
+    {
+        int slotCount;
+        bool remain;
+
+        public Remain(int slotCount, bool remain = true)
+        {
+            this.slotCount = slotCount;
+            this.remain = remain;
+        }
+
+        public IEnumerator Activate()
+        {
+            CardField field = GameManager.Instance.card.field;
+            field.GetSlot(slotCount).isRemaining = remain;
+            yield break;
+        }
+    }
+
+    public class SetIntensity: IAct
+    {
+        int slotCount;
+        int intensity;
+
+        public SetIntensity(int slotCount, int intensity)
+        {
+            this.slotCount = slotCount;
+            this.intensity = intensity;
+        }
+
+        public IEnumerator Activate()
+        {
+            CardField field = GameManager.Instance.card.field;
+            field.GetSlot(slotCount).intensity = intensity;
+            yield break;
+        }
+    }
+
     public class Del: IAct
     {
         public Vector2Int pos;
@@ -90,7 +128,7 @@ namespace Act
 
         public Del(int slotCount)
         {
-            pos = new Vector2Int(slotCount / 3, slotCount % 3);
+            pos = CardField.Count2Slot(slotCount);
         }
 
         public IEnumerator Activate()
@@ -175,7 +213,6 @@ namespace Act
             {
                 yield return acts[i].Activate();
             }
-            acts.Clear();
             yield break;
         }
 
@@ -183,7 +220,15 @@ namespace Act
         {
             yield return CardSystem.InvokeTrigger(this, "P" + triggerSuffix);
             yield return Invoke();
+
+            IAct[] temp = new IAct[acts.Count];
+            acts.CopyTo(temp);
+
             yield return CardSystem.InvokeTrigger(this, "A" + triggerSuffix);
+
+            foreach (var act in temp)
+                Remove(act);
+
             yield return Invoke();
         }
 
