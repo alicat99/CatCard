@@ -29,7 +29,7 @@ public class Card_AttackUp : CardData
         }));
         Query query = new Query(act);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Magic", 0);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Magic", "magic", 0);
         query.AddBubble(act, effect);
 
         yield return query.Process($"{es[0].entityType}{slotCount:00}AddTrigger");

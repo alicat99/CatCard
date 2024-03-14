@@ -10,28 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Default_en-US
+  m_Name: EffectBubble_ko-KR
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: en-US
-  m_SharedData: {fileID: 11400000, guid: 43667fd4abd196f45ac9d1a602cada74, type: 2}
+    m_Code: ko-KR
+  m_SharedData: {fileID: 11400000, guid: 2f1232302c304b54db9471c94f4f931c, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 148516286464
-    m_Localized: Check!
+  - m_Id: 126089342976
+    m_Localized: "\uACF5\uACA9"
     m_Metadata:
       m_Items: []
-  - m_Id: 1165186215936
-    m_Localized: 
+  - m_Id: 194158702592
+    m_Localized: "\uB9C8\uBC95"
     m_Metadata:
       m_Items: []
-  - m_Id: 1236556492800
-    m_Localized: 
+  - m_Id: 175947034624
+    m_Localized: "\uD68C\uBCF5"
     m_Metadata:
       m_Items: []
-  - m_Id: 1801722930573312
-    m_Localized: 
+  - m_Id: 991546224640
+    m_Localized: "\uD68C\uC804"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1586109788160
+    m_Localized: "\uC720\uC9C0"
     m_Metadata:
       m_Items: []
   references:

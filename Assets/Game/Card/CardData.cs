@@ -10,17 +10,17 @@ public class CardData : ScriptableObject
     public string description;
     public int intensity;
 
-    public virtual IEnumerator OnActivate(Entity[] es, int slot, Vector2Int dir, int intensity)
+    public virtual IEnumerator OnActivate(Entity[] es, int slotCount, Vector2Int dir, int intensity)
     {
         yield break;
     }
 
-    public virtual IEnumerator OnInitialize(Entity[] es, int slot, int intensity)
+    public virtual IEnumerator OnInitialize(Entity[] es, int slotCount, int intensity)
     {
         yield break;
     }
 
-    public virtual IEnumerator OnStart(Entity[] es, int slot, int intensity)
+    public virtual IEnumerator OnStart(Entity[] es, int slotCount, int intensity)
     {
         yield break;
     }

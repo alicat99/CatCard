@@ -10,7 +10,7 @@ public class Card_Attack : CardData
         var act = new Attack(es[1], intensity);
         Query query = new Query(act);
         
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Attack", intensity);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Attack", "attack", intensity);
         query.AddBubble(act, effect);
 
         yield return new WaitForSeconds(0.5f);

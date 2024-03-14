@@ -11,7 +11,7 @@ public class Card_Rotate : CardData
         var act = new RotateDir(Rotation.m90);
         Query query = new Query(act);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Magic", 0);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Magic", "rotation", 0);
         query.AddBubble(act, effect);
 
         yield return new WaitForSeconds(0.5f);

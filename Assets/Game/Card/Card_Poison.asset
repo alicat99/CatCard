@@ -15,4 +15,4 @@ MonoBehaviour:
   icon: {fileID: -7482469090100382566, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
   cardName: card_poison_name
   description: card_poison_desc
-  intensity: 2
+  intensity: 1

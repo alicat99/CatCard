@@ -14,7 +14,9 @@ public class CardField : MonoBehaviour
 
     public CardFieldItem[,] field;
 
+    [HideInInspector]
     public Vector2Int currentDir;
+    [HideInInspector]
     public Vector2Int currentPos;
     public int slotCount
     {

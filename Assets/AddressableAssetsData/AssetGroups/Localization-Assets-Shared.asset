@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f1232302c304b54db9471c94f4f931c
+    m_Address: Assets/General/Localization/FloatingBubble Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 0277e298534d9c84aa3cbcf2df04c0ab, type: 2}
   m_SchemaSet:

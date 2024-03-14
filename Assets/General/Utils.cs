@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Act;
 
 public static class Utils
 {
@@ -56,6 +57,19 @@ public static class Utils
                 return Mathf.PI * -0.5f;
         }
         return 0;
+    }
+
+    public static bool IsDeleted(Query query, int slotCount)
+    {
+        foreach (var act in query)
+        {
+            if (!act.GetType().IsAssignableFrom(typeof(Del)))
+                continue;
+            var del = (Del)act;
+            if (CardField.Slot2Count(del.pos) == slotCount)
+                return true;
+        }
+        return false;
     }
 }
 

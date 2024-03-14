@@ -15,6 +15,8 @@ public class UIEffectBubble : MonoBehaviour
     RectTransform number;
     [SerializeField]
     TextMeshProUGUI numberText;
+    [SerializeField]
+    TextMeshProUGUI descriptionText;
 
     new RectTransform transform;
     CanvasGroup canvasGroup;
@@ -29,7 +31,7 @@ public class UIEffectBubble : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    public void Initialize(Vector2 pos, Transform parent, Sprite sprite, int intensity)
+    public void Initialize(Vector2 pos, Transform parent, Sprite sprite, int intensity, string description)
     {
         transform.SetParent(parent);
         transform.position = pos;
@@ -51,6 +53,10 @@ public class UIEffectBubble : MonoBehaviour
             numberText.text = intensity.ToString();
             number.DOAnchorPos(new Vector2(0, 150), 1).From(new Vector2(0, -150)).SetLink(gameObject).SetEase(Ease.OutExpo);
         }
+
+        descriptionText.text = Utils.GetLocalizedString(description, "EffectBubble");
+        descriptionText.DOColor(new Color(0, 0, 0, 0), 1.5f).From(new Color(0, 0, 0, 1)).SetLink(gameObject);
+        DOTween.To(() => descriptionText.characterSpacing, value => descriptionText.characterSpacing = value, 30, 1).From(0).SetLink(gameObject).SetEase(Ease.OutExpo);
 
         duration = 0.7f;
         life = StartCoroutine(Life());

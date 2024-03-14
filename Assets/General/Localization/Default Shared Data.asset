@@ -59,6 +59,14 @@ MonoBehaviour:
     m_Key: card_attackup_desc
     m_Metadata:
       m_Items: []
+  - m_Id: 31142517546332160
+    m_Key: card_poison_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31142612039806976
+    m_Key: card_poison_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
