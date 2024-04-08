@@ -5,60 +5,60 @@ using Act;
 
 public class Card_Poison : CardData
 {
-    public override IEnumerator OnStart(Entity[] es, int slotCount, int intensity)
+    public override IEnumerator OnInitialize(CardInstance instance)
     {
-        if (intensity > 0)
+        var trigger = new Trigger(
+            "A/DEL", act => ((Del)act).target == instance,
+            "A/DEL", act => ((Del)act).target == instance,
+            act => OnTrigger(instance));
+
+        Act.Act act = new AddTrigger("TRG", trigger);
+
+        yield return act.Invoke(instance);
+    }
+
+    public override IEnumerator OnStart(CardInstance instance)
+    {
+        if (instance.intensity > 0)
         {
-            Query query = new Query();
+            Act.Act act = new Remain("REM", instance, true);
 
-            var act = new Remain(slotCount);
-            query.Add(act);
-            var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Magic", "preservation", 0);
-            query.AddBubble(act, effect);
-
-            var set = new SetIntensity(slotCount, intensity - 1);
-            query.Add(set);
+            var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "preservation", 0);
+            act.AddEffect(effect);
 
             yield return new WaitForSeconds(0.5f);
-            yield return query.Process($"{es[0].entityType}{slotCount:00}Remain");
-        }
-        else
-        {
-            yield break;
+
+            yield return act.Invoke(instance);
+
+            act = new SetIntensity("INT", instance, instance.intensity - 1);
+
+            yield return act.Invoke(instance);
         }
     }
 
-    public override IEnumerator OnActivate(Entity[] es, int slotCount, Vector2Int dir, int intensity)
+    private IEnumerator OnTrigger(CardInstance instance)
     {
-        var act = new Attack(es[1], 1);
-        Query query = new Query(act);
+        Entity target = instance.field.GetEntity(instance.entityType);
+        var act = new AddHealth("ATK", -1, target);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Attack", "attack", act.damage);
-        query.AddBubble(act, effect);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Attack", "attack", -act.amount);
+        act.AddEffect(effect);
 
         yield return new WaitForSeconds(0.5f);
-        yield return query.Process($"{es[0].entityType}{slotCount:00}Attack");
+
+        yield return act.Invoke(instance);
     }
 
-    public override IEnumerator OnInitialize(Entity[] es, int slotCount, int intensity)
+    public override IEnumerator OnActivate(CardInstance instance, Vector2Int dir)
     {
-        var act = new AddTrigger(new Trigger("A", "A", query => Trigger(query, slotCount, es), query => Utils.IsDeleted(query, slotCount)));
-        Query query = new Query(act);
+        Entity target = instance.field.GetEntity(instance.entityType.Inverse());
+        var act = new AddHealth("ATK", -1, target);
 
-        yield return query.Process($"{es[0].entityType}{slotCount:00}AddTrigger");
-    }
-
-
-    private IEnumerator Trigger(Query query, int slotCount, Entity[] es)
-    {
-        if (!Utils.IsDeleted(query, slotCount))
-            yield break;
-
-        var act = new Attack(es[0], 1);
-        query.Add(act);
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Attack", "attack", act.damage);
-        query.AddBubble(act, effect);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Attack", "attack", -act.amount);
+        act.AddEffect(effect);
 
         yield return new WaitForSeconds(0.5f);
+
+        yield return act.Invoke(instance);
     }
 }

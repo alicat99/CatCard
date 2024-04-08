@@ -17,6 +17,8 @@ public class UIEffectBubble : MonoBehaviour
     TextMeshProUGUI numberText;
     [SerializeField]
     TextMeshProUGUI descriptionText;
+    [SerializeField]
+    RectTransform descriptionBG;
 
     new RectTransform transform;
     CanvasGroup canvasGroup;
@@ -41,7 +43,7 @@ public class UIEffectBubble : MonoBehaviour
         shadow.DORotate(new Vector3(0, 0, 315), 1, RotateMode.FastBeyond360).From(Vector3.zero).SetLink(gameObject).SetEase(Ease.OutExpo);
 
         icon.sprite = sprite;
-        icon.rectTransform.DOAnchorPos(new Vector2(0, 250), 1).From(new Vector2(0, 50)).SetLink(gameObject).SetEase(Ease.OutExpo);
+        icon.rectTransform.DOAnchorPos(new Vector2(0, 330), 1).From(new Vector2(0, 50)).SetLink(gameObject).SetEase(Ease.OutExpo);
 
         if (intensity == 0)
         {
@@ -55,8 +57,17 @@ public class UIEffectBubble : MonoBehaviour
         }
 
         descriptionText.text = Utils.GetLocalizedString(description, "EffectBubble");
-        descriptionText.DOColor(new Color(0, 0, 0, 0), 1.5f).From(new Color(0, 0, 0, 1)).SetLink(gameObject);
-        DOTween.To(() => descriptionText.characterSpacing, value => descriptionText.characterSpacing = value, 30, 1).From(0).SetLink(gameObject).SetEase(Ease.OutExpo);
+        //descriptionText.DOColor(new Color(0, 0, 0, 0), 1.5f).From(new Color(0, 0, 0, 1)).SetLink(gameObject);
+        DOTween.To(() => descriptionText.characterSpacing, value =>
+        {
+            descriptionText.characterSpacing = value;
+        }, 30, 1).From(0).SetLink(gameObject).SetEase(Ease.OutExpo);
+
+        descriptionText.characterSpacing = 30;
+        float width = descriptionText.preferredWidth + 40;
+        descriptionBG.sizeDelta = new Vector2(width, descriptionBG.sizeDelta.y);
+
+        descriptionBG.DOAnchorPos(new Vector2(0, -70), 2).From(new Vector2(0, -100)).SetLink(gameObject).SetEase(Ease.OutExpo);
 
         duration = 0.7f;
         life = StartCoroutine(Life());
@@ -95,8 +106,9 @@ public class UIEffectBubble : MonoBehaviour
         canvasGroup.DOFade(1, 0.5f).From(0f).SetLink(gameObject);
     }
 
-    public void AddDuration(float t = 1f)
+    public void AddDuration(float t = 0.5f)
     {
+        Debug.Log(duration);
         duration += t;
     }
 

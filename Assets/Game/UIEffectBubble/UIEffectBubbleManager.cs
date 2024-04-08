@@ -68,14 +68,9 @@ public class UIEffectBubbleManager : MonoBehaviour
 
     public UIEffectBubble PrintBySlot(Vector2Int slot, string iconName, string description, int intensity = 0)
     {
-        Vector2 position = card.field.GetSlot(slot).transform.position;
+        Vector2 position = card.field.GetItem(slot).transform.position;
         //Vector2 position = card.field.GetSlot(slot).GetComponent<RectTransform>().position;
         return Print(position, iconName, description, intensity);
-    }
-
-    public UIEffectBubble PrintBySlot(int slotCount, string iconName, string description, int intensity = 0)
-    {
-        return PrintBySlot(CardField.Count2Slot(slotCount), iconName, description, intensity);
     }
 
     private void OnDestroy()

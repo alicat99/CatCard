@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: card_poison_desc
     m_Metadata:
       m_Items: []
+  - m_Id: 42712662118936576
+    m_Key: trigger_excution_reached_maximum
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

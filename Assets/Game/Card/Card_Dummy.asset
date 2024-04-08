@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4c4282ce4f96f54e96b3f3b64196fc7, type: 3}
-  m_Name: Card_Regen
+  m_Script: {fileID: 11500000, guid: a2b713c9cfe22594492659e94e5acde9, type: 3}
+  m_Name: Card_Dummy
   m_EditorClassIdentifier: 
-  icon: {fileID: 2321927273987851333, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
-  cardName: card_regen_name
-  description: card_regen_desc
-  intensity: 1
+  icon: {fileID: 0}
+  cardName: 
+  description: 
+  intensity: 0

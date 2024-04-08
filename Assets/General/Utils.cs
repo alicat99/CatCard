@@ -3,28 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Act;
 
 public static class Utils
 {
     public static string GetLocalizedString(string keyName, string tableName = "Default")
     {
         LocalizedString localizeString = new LocalizedString() { TableReference = tableName, TableEntryReference = keyName };
-        var stringOperation = localizeString.GetLocalizedStringAsync();
-
-        if (stringOperation.IsDone && stringOperation.Status == AsyncOperationStatus.Succeeded)
-        {
-            return stringOperation.Result;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public static Coroutine StartCoroutine(IEnumerator enumerator)
-    {
-        return GameManager.Instance.StartCoroutine(enumerator);
+        var text = localizeString.GetLocalizedString();
+        return text;
     }
 
     public static Vector2Int Rotate(this Vector2Int v, Rotation r)
@@ -45,31 +31,31 @@ public static class Utils
 
     public static float ToFloat(this Rotation r)
     {
-        switch (r)
+        return r switch
         {
-            case Rotation.p0:
-                return 0;
-            case Rotation.p90:
-                return Mathf.PI * 0.5f;
-            case Rotation.p180:
-                return Mathf.PI;
-            case Rotation.p270:
-                return Mathf.PI * -0.5f;
-        }
-        return 0;
+            Rotation.p0 => 0,
+            Rotation.p90 => Mathf.PI * 0.5f,
+            Rotation.p180 => Mathf.PI,
+            Rotation.p270 => Mathf.PI * -0.5f,
+            _ => 0,
+        };
     }
 
-    public static bool IsDeleted(Query query, int slotCount)
+    public static Rotation Inverse(this Rotation r)
     {
-        foreach (var act in query)
+        return r switch
         {
-            if (!act.GetType().IsAssignableFrom(typeof(Del)))
-                continue;
-            var del = (Del)act;
-            if (CardField.Slot2Count(del.pos) == slotCount)
-                return true;
-        }
-        return false;
+            Rotation.p0 => Rotation.p0,
+            Rotation.p90 => Rotation.m90,
+            Rotation.p180 => Rotation.m180,
+            Rotation.p270 => Rotation.m270,
+            _ => Rotation.p0,
+        };
+    }
+
+    public static EntityType Inverse(this EntityType type)
+    {
+        return type == EntityType.P ? EntityType.E : EntityType.P;
     }
 }
 

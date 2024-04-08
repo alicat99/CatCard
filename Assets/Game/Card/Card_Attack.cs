@@ -5,15 +5,16 @@ using Act;
 
 public class Card_Attack : CardData
 {
-    public override IEnumerator OnActivate(Entity[] es, int slotCount, Vector2Int dir, int intensity)
+    public override IEnumerator OnActivate(CardInstance instance, Vector2Int dir)
     {
-        var act = new Attack(es[1], intensity);
-        Query query = new Query(act);
-        
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(slotCount, "Attack", "attack", intensity);
-        query.AddBubble(act, effect);
+        Entity target = instance.field.GetEntity(instance.entityType.Inverse());
+        Act.Act act = new AddHealth("ATK", -instance.intensity, target);
+
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Attack", "attack", instance.intensity);
+        act.AddEffect(effect);
 
         yield return new WaitForSeconds(0.5f);
-        yield return query.Process($"{es[0].entityType}{slotCount:00}Attack");
+
+        yield return act.Invoke(instance);
     }
 }

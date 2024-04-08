@@ -23,9 +23,12 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
 
     private bool isInitiated;
-
+    
+    [HideInInspector]
     public CardManager card;
+    [HideInInspector]
     public FloatingTextManager floatingText;
+    [HideInInspector]
     public UIEffectBubbleManager uiEffectBubble;
 
     private void Awake()

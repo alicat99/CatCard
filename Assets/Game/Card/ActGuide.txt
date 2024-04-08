@@ -1,0 +1,24 @@
+
+# 가장 앞 B / A: 효과 발동 전 / 후
+# 태그는 3글자씩, "/"으로 구분
+ex) A/DEL/SYS
+
+# 태그 목록
+
+INI: Initialize
+
+END: Turn End
+
+DEL: Del
+	SYS: System
+
+ROT: Rotation
+
+
+ATK: Attack
+
+TRG: AddTrigger
+
+INT: SetIntensity
+
+REM: Remain

@@ -1,292 +1,238 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Act
 {
-    public interface IAct
+    public abstract class Act
     {
-        public IEnumerator Activate();
-    }
+        public bool cancel = false;
+        public readonly string triggerWord;
+        private UIEffectBubble effect;
+        public CardInstance instance { get; private set; }
 
-    public class Attack: IAct
-    {
-        public Entity target;
-        public int damage;
-
-        public Attack(Entity target, int damage)
+        public Act(string triggerWord)
         {
-            this.target = target;
-            this.damage = damage;
+            this.triggerWord = triggerWord;
+            effect = null;
         }
 
-        public IEnumerator Activate()
+        public IEnumerator Invoke(CardInstance instance)
         {
-            target.health -= damage;
-            yield break;
-        }
-    }
+            this.instance = instance;
 
-    public class Regen : IAct
-    {
-        public Entity target;
-        public int heal;
+            yield return CardSystem.InvokeTrigger(this, "B/" + triggerWord);
 
-        public Regen(Entity target, int heal)
-        {
-            this.target = target;
-            this.heal = heal;
+            if (cancel)
+                yield break;
+
+            Activate();
+            yield return CardSystem.InvokeTrigger(this, "A/" + triggerWord);
         }
 
-        public IEnumerator Activate()
+        protected virtual void Activate()
         {
-            target.health += heal;
-            yield break;
-        }
-    }
 
-    public class AddTrigger : IAct
-    {
-        public Trigger trigger;
-
-        public AddTrigger(Trigger trigger)
-        {
-            this.trigger = trigger;
         }
 
-        public IEnumerator Activate()
+        public void AddEffect(UIEffectBubble effect)
         {
-            CardSystem.InitializeTrigger(trigger);
-            yield break;
-        }
-    }
-
-    public class RotateDir: IAct
-    {
-        public Rotation r;
-
-        public RotateDir(Rotation r)
-        {
-            this.r = r;
+            this.effect = effect;
         }
 
-        public IEnumerator Activate()
+        public bool TryGetEffect(out UIEffectBubble effect)
         {
-            CardField field = GameManager.Instance.card.field;
-            field.currentDir = field.currentDir.Rotate(r);
-            yield return field.currentSlot.RotateAnim(r);
-        }
-    }
-
-    public class Remain: IAct
-    {
-        int slotCount;
-        bool remain;
-
-        public Remain(int slotCount, bool remain = true)
-        {
-            this.slotCount = slotCount;
-            this.remain = remain;
-        }
-
-        public IEnumerator Activate()
-        {
-            CardField field = GameManager.Instance.card.field;
-            field.GetSlot(slotCount).isRemaining = remain;
-            yield break;
-        }
-    }
-
-    public class SetIntensity: IAct
-    {
-        int slotCount;
-        int intensity;
-
-        public SetIntensity(int slotCount, int intensity)
-        {
-            this.slotCount = slotCount;
-            this.intensity = intensity;
-        }
-
-        public IEnumerator Activate()
-        {
-            CardField field = GameManager.Instance.card.field;
-            field.GetSlot(slotCount).intensity = intensity;
-            yield break;
-        }
-    }
-
-    public class Del: IAct
-    {
-        public Vector2Int pos;
-
-        public Del(Vector2Int pos)
-        {
-            this.pos = pos;
-        }
-
-        public Del(int slotCount)
-        {
-            pos = CardField.Count2Slot(slotCount);
-        }
-
-        public IEnumerator Activate()
-        {
-            CardField field = GameManager.Instance.card.field;
-            field.SetCard(pos.x, pos.y, null, EntityType.P);
-            yield break;
+            effect = this.effect;
+            return this.effect != null;
         }
     }
 
     public class Trigger
     {
-        public string required { get; private set; }
-        public string end { get; private set; }
-        Func<Query, IEnumerator> onTrigger;
-        Func<Query, bool> onEnd;
+        public readonly string required;
+        public readonly Func<Act, bool> requiredCondition;
+        public readonly string end;
+        public readonly Func<Act, bool> endCondition;
+        public readonly Func<Act, IEnumerator> onTrigger;
 
-        public Trigger(string required, string end, Func<Query, IEnumerator> onTrigger, Func<Query, bool> onEnd = null)
+        public Trigger(string required, Func<Act, bool> requiredCondition, string end, Func<Act, bool> endCondition, Func<Act, IEnumerator> onTrigger)
         {
             this.required = required;
+            this.requiredCondition = requiredCondition;
             this.end = end;
+            this.endCondition = endCondition;
             this.onTrigger = onTrigger;
-            this.onEnd = onEnd;
-        }
-
-        public IEnumerator OnTrigger(Query query)
-        {
-            if (onTrigger == null)
-                yield break;
-            yield return onTrigger.Invoke(query);
-        }
-
-        public bool OnEnd(Query query)
-        {
-            if (onEnd == null)
-                return true;
-            return onEnd.Invoke(query);
-        }
-    }
-
-    public class Query: IEnumerable<IAct>
-    {
-        List<IAct> acts;
-        public Dictionary<IAct, UIEffectBubble> bubbles { get; private set; }
-        public string lastTrigger;
-
-        public Query(params IAct[] acts)
-        {
-            this.acts = new List<IAct>(acts);
-            bubbles = new Dictionary<IAct, UIEffectBubble>(acts.Length);
-        }
-
-        public IEnumerator<IAct> GetEnumerator()
-        {
-            for (int i = 0; i < acts.Count; i++)
-            {
-                yield return acts[i];
-            }
-            yield break;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return acts.GetEnumerator();
-        }
-
-        public int Count { get => acts.Count; }
-
-        public IAct this[int i] => acts[i];
-
-        public void Add(IAct item) => acts.Add(item);
-
-        public void RemoveAt(int i) => acts.RemoveAt(i);
-
-        public void Remove(IAct item) => acts.Remove(item);
-
-        public void Clear() => acts.Clear();
-
-        public IEnumerator Invoke()
-        {
-            for (int i = 0; i < acts.Count; i++)
-            {
-                yield return acts[i].Activate();
-            }
-            yield break;
-        }
-
-        public IEnumerator Process(string triggerSuffix)
-        {
-            yield return CardSystem.InvokeTrigger(this, "P" + triggerSuffix);
-            yield return Invoke();
-
-            IAct[] temp = new IAct[acts.Count];
-            acts.CopyTo(temp);
-
-            yield return CardSystem.InvokeTrigger(this, "A" + triggerSuffix);
-
-            foreach (var act in temp)
-                Remove(act);
-
-            yield return Invoke();
-        }
-
-        public bool TryGetBubble(IAct act, out UIEffectBubble bubble)
-        {
-            if (!bubbles.TryGetValue(act, out bubble))
-                return false;
-            if (!bubble.isLive)
-                return false;
-            return true;
-        }
-
-        public void AddBubble(IAct act, UIEffectBubble bubble)
-        {
-            bubbles[act] = bubble;
         }
     }
 
     public static class CardSystem
     {
-        static List<Trigger> triggers = new List<Trigger>();
+        public static readonly List<Trigger> triggers = new List<Trigger>();
+
+        static int triggerCount;
+
+        public static void Reset()
+        {
+            triggers.Clear();
+        }
+
+        public static void ResetTriggerCount(int count)
+        {
+            triggerCount = count;
+        }
 
         public static void InitializeTrigger(Trigger trigger)
         {
             triggers.Add(trigger);
         }
 
-        public static bool TestTrigger(string trigger, string required)
+        public static bool TestTrigger(string triggerWord, string required)
         {
-            if (trigger.Length < required.Length || required.Length == 0)
+            if (triggerWord.Length < required.Length || required.Length == 0)
                 return false;
 
             for (int i = 0; i < required.Length; i++)
             {
-                if (trigger[i] != required[i] && required[i] != '_')
+                if (triggerWord[i] != required[i] && required[i] != '_')
                     return false;
             }
             return true;
         }
 
-        public static IEnumerator InvokeTrigger(Query query, string triggerStr)
+        public static IEnumerator InvokeTrigger(Act act, string triggerWord)
         {
-            query.lastTrigger = triggerStr;
             for (int i = 0; i < triggers.Count; i++)
             {
                 Trigger trigger = triggers[i];
-                if (TestTrigger(triggerStr, trigger.required))
+                if (TestTrigger(triggerWord, trigger.required) && trigger.requiredCondition(act))
                 {
-                    yield return trigger.OnTrigger(query);
+                    if (triggerCount <= 0)
+                    {
+                        string content = Utils.GetLocalizedString("trigger_excution_reached_maximum");
+                        GameManager.Instance.card.field.Alert(content);
+                        yield break;
+                    }
+                    triggerCount -= 1;
+
+                    yield return trigger.onTrigger(act);
                 }
 
-                if (TestTrigger(triggerStr, trigger.end) && trigger.OnEnd(query))
+                if (TestTrigger(triggerWord, trigger.end) && trigger.endCondition(act))
                 {
+                    if (triggerCount <= 0)
+                    {
+                        string content = Utils.GetLocalizedString("trigger_excution_reached_maximum");
+                        GameManager.Instance.card.field.Alert(content);
+                        yield break;
+                    }
+                    triggerCount -= 1;
+
                     triggers.RemoveAt(i);
                     i -= 1;
                 }
             }
             yield break;
+        }
+    }
+
+    //-- Acts --//
+    public class AddTrigger: Act
+    {
+        public readonly Trigger trigger;
+
+        public AddTrigger(string t, Trigger trigger): base(t)
+        {
+            this.trigger = trigger;
+        }
+
+        protected override void Activate()
+        {
+            CardSystem.InitializeTrigger(trigger);
+        }
+    }
+
+    public class AddHealth: Act
+    {
+        public int amount;
+        public Entity target;
+
+        public AddHealth(string t, int amount, Entity target): base(t)
+        {
+            this.amount = amount;
+            this.target = target;
+        }
+
+        protected override void Activate()
+        {
+            target.health += amount;
+        }
+    }
+
+    public class Rotate: Act
+    {
+        public readonly Rotation r;
+
+        public Rotate(string t, Rotation r): base(t)
+        {
+            this.r = r;
+        }
+
+        protected override void Activate()
+        {
+            instance.field.currentDir = instance.field.currentDir.Rotate(r);
+        }
+    }
+
+    public class SetIntensity: Act
+    {
+        public readonly CardInstance target;
+        public readonly int newIntensity;
+
+        public SetIntensity(string t, CardInstance target, int newIntensity): base(t)
+        {
+            this.target = target;
+            this.newIntensity = newIntensity;
+        }
+
+        protected override void Activate()
+        {
+            target.intensity = newIntensity;
+            var item = instance.field.GetItem(instance.pos);
+            item.UpdateUI();
+        }
+    }
+
+    public class Del: Act
+    {
+        public readonly CardInstance target;
+
+        public Del(string t, CardInstance target): base(t)
+        {
+            this.target = target;
+        }
+
+        protected override void Activate()
+        {
+            var item = instance.field.GetItem(instance.pos);
+            item.SetData(null, EntityType.P);
+        }
+    }
+
+    public class Remain: Act
+    {
+        public readonly CardInstance target;
+        public readonly bool value;
+
+        public Remain(string t, CardInstance target, bool value): base(t)
+        {
+            this.target = target;
+            this.value = value;
+        }
+
+        protected override void Activate()
+        {
+            target.isRemaining = value;
         }
     }
 }

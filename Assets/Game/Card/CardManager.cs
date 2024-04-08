@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Act;
 
 public class CardManager : MonoBehaviour
 {
@@ -8,6 +9,12 @@ public class CardManager : MonoBehaviour
     public CardField field;
     public BattlegroundUI battleground;
     public CardUIBackground background;
+
+    public CardData dummyCardData;
+
+    //temp
+    [Multiline(15)]
+    public string displayTrigger;
 
     //temp
     [SerializeField]
@@ -22,5 +29,15 @@ public class CardManager : MonoBehaviour
     public void Initialize()
     {
 
+    }
+
+    //temp
+    public void Update()
+    {
+        displayTrigger = "";
+        foreach (var trg in CardSystem.triggers)
+        {
+            displayTrigger += trg.required + "\n";
+        }
     }
 }

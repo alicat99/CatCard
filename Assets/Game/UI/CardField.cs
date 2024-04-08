@@ -12,22 +12,16 @@ public class CardField : MonoBehaviour
     public CardUIBackground background;
     public BattlegroundUI battleground;
 
-    public CardFieldItem[,] field;
+    private CardFieldItem[,] field;
 
     [HideInInspector]
     public Vector2Int currentDir;
     [HideInInspector]
     public Vector2Int currentPos;
-    public int slotCount
-    {
-        get
-        {
-            return Slot2Count(currentPos);
-        }
-    }
-    public int cardCount { get; private set; }
-    public CardFieldItem currentSlot { get => GetSlot(currentPos); }
+    public CardFieldItem currentSlot { get => GetItem(currentPos); }
     public bool isRunning { get; private set; }
+
+    const int CARD_INVOKE_COUNT = 10;
 
     private void Start()
     {
@@ -40,10 +34,12 @@ public class CardField : MonoBehaviour
                 var obj = Instantiate(cardFieldItemPrefab, transform);
                 CardFieldItem cardFieldItem = obj.GetComponent<CardFieldItem>();
                 field[i, j] = cardFieldItem;
-                cardFieldItem.Initialize(this, types[i, j]);
+                cardFieldItem.Initialize(this, types[i, j], new Vector2Int(i, j));
             }
         }
         RandomFill();
+
+        CardSystem.Reset();
     }
 
     public void SetCard(int i, int j, CardData cardData, EntityType type)
@@ -57,33 +53,30 @@ public class CardField : MonoBehaviour
 
         currentDir = Vector2Int.right;
         currentPos = Vector2Int.zero;
-
         for (int x = 0; x < 3; x++)
         {
             for (int y = 0; y < 3; y++)
             {
                 CardFieldItem item = field[x, y];
-                if (item.cardData != null)
+                if (item.cardInstance != null)
                 {
-                    int count = Slot2Count(new Vector2Int(x, y));
-
-                    if (!item.isCardInitialized)
+                    var instance = item.cardInstance;
+                    if (!instance.isInitialized)
                     {
-                        item.isCardInitialized = true;
-
-                        yield return item.InitializeCard(count);
-                        yield return CardSystem.InvokeTrigger(new Query(), $"AS{count:00}Init");
+                        CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
+                        yield return item.CardInitialize();
+                        CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
+                        yield return CardSystem.InvokeTrigger(null, "A/INI");
                     }
 
-                    yield return item.StartCard(count);
+                    CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
+                    yield return item.CardStart();
                 }
             }
         }
-        yield return new WaitForSeconds(0.5f);
 
         int i;
         var w = new WaitForSeconds(0.05f);
-        cardCount = 0;
         for (i = 0; i < 50; i++)
         {
             if (NotInField())
@@ -91,6 +84,7 @@ public class CardField : MonoBehaviour
 
             var s = currentSlot;
             var lastDir = currentDir;
+            CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
             yield return s.Activate(lastDir);
             if (NotInField())
                 break;
@@ -102,16 +96,16 @@ public class CardField : MonoBehaviour
             yield return w;
 
             currentPos += new Vector2Int(-currentDir[1], currentDir[0]);
-            cardCount += 1;
         }
         if (i == 25)
         {
-            FloatingTextManager.Print(Utils.GetLocalizedString("card_excution_reached_maximum"), new Vector2(0, 500), Color.white);
+            Alert(Utils.GetLocalizedString("card_excution_reached_maximum"));
             yield return new WaitForSeconds(0.5f);
         }
+        Alert(Utils.GetLocalizedString("turn_end"));
 
-
-        yield return CardSystem.InvokeTrigger(new Query(), "AS00TurnEnd");
+        CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
+        yield return CardSystem.InvokeTrigger(null, "A/END");
         FloatingTextManager.Print(Utils.GetLocalizedString("turn_end"), new Vector2(0, 500), Color.white);
 
         w = new WaitForSeconds(0.1f);
@@ -120,17 +114,18 @@ public class CardField : MonoBehaviour
             for (int y = 0; y < 3; y++)
             {
                 CardFieldItem item = field[x, y];
-                if (item.isRemaining)
+                var instance = item.cardInstance;
+                if (instance == null)
+                    continue;
+                if (instance.isRemaining)
                 {
-                    item.isRemaining = false;
+                    instance.isRemaining = false;
                     continue;
                 }
-                if (item.cardData != null)
-                {
-                    var query = new Query(new Del(new Vector2Int(x, y)));
-                    yield return query.Process($"S{x * 3 + y:00}Del");
-                    yield return w;
-                }
+                var act = new Del("DEL/SYS", instance);
+                CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
+                yield return act.Invoke(item.systemInstance);
+                yield return w;
             }
         }
         yield return new WaitForSeconds(0.3f);
@@ -155,26 +150,21 @@ public class CardField : MonoBehaviour
         return !(0 <= pos[0] && pos[0] < 3 && 0 <= pos[1] && pos[1] < 3);
     }
 
-    public static int Slot2Count(Vector2Int pos)
-    {
-        return pos[1] + (pos[0] * 3);
-    }
-
-    public static Vector2Int Count2Slot(int count)
-    {
-        return new Vector2Int(count / 3, count % 3);
-    }
-
-    public CardFieldItem GetSlot(Vector2Int pos)
+    public CardFieldItem GetItem(Vector2Int pos)
     {
         if (NotInField(pos))
             return null;
         return field[pos[0], pos[1]];
     }
 
-    public CardFieldItem GetSlot(int count)
+    public Entity GetEntity(EntityType type)
     {
-        return GetSlot(Count2Slot(count));
+        return type == EntityType.P ? battleground.es[0] : battleground.es[1];
+    }
+
+    public void Alert(string content)
+    {
+        FloatingTextManager.Print(content, new Vector2(0, 500), Color.white);
     }
 
     //temp
@@ -184,7 +174,7 @@ public class CardField : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                if (field[i, j].cardData == null && Random.value < 0.5f)
+                if (field[i, j].cardInstance == null && Random.value < 0.5f)
                 {
                     SetCard(i, j, GameManager.Instance.card.GetRandomCard(), EntityType.E);
                 }

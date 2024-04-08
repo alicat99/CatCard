@@ -17,29 +17,12 @@ public class CardFieldItem : MonoBehaviour, ISelectable
     [SerializeField]
     TextMeshProUGUI intensityText;
 
-    public CardData cardData { get; private set; }
     public CardField parent { get; private set; }
-    public EntityType type { get; private set; }
     public int fieldType { get; private set; }
-    public int intensity
-    {
-        get => _intensity;
-        set
-        {
-            _intensity = value;
-            if (_intensity == 0)
-            {
-                intensityText.enabled = false;
-            }
-            else
-            {
-                intensityText.enabled = true;
-                intensityText.text = _intensity.ToString();
-            }
-        }
-    }
-    private int _intensity;
-    public bool isRemaining;
+    public Vector2Int pos { get; private set; }
+
+    public CardInstance cardInstance { get; private set; }
+    public CardInstance systemInstance { get; private set; }
 
     private bool visibility
     {
@@ -60,21 +43,23 @@ public class CardFieldItem : MonoBehaviour, ISelectable
     private bool _visibility;
     private Tween visibilityTween;
 
-    public bool isCardInitialized = false;
-
     private Tween currentFadeTween = null;
 
-    public void Initialize(CardField parent, int fieldType)
+    public void Initialize(CardField parent, int fieldType, Vector2Int pos)
     {
         this.parent = parent;
         GetComponent<Button>().onClick.AddListener(OnClick);
         GetComponent<Image>().sprite = sprites[fieldType];
         this.fieldType = fieldType;
+        this.pos = pos;
+        cardInstance = null;
+        var dummy = GameManager.Instance.card.dummyCardData;
+        systemInstance = new CardInstance(pos, dummy, EntityType.P, parent);
     }
 
     private void OnClick()
     {
-        if (cardData == null)
+        if (cardInstance == null)
         {
             CardSelector cardSelector = parent.cardSelector;
             if (cardSelector.selectedItem == null || parent.isRunning)
@@ -90,32 +75,52 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         }
         else
         {
-            parent.background.SelectData(this, cardData, intensity);
+            parent.background.SelectData(this, cardInstance.card, cardInstance.intensity);
         }
     }
 
     public void SetData(CardData cardData, EntityType type)
     {
-        this.cardData = cardData;
-        this.type = type;
-
         if (cardData == null)
         {
+            cardInstance = null;
             visibility = false;
             intensityText.enabled = false;
             return;
         }
 
-        visibility = true;
-        intensity = cardData.intensity;
-        icon.sprite = cardData.icon;
-        var c = type == EntityType.P ? Color.white : Color.red;
-        c.a = icon.color.a;
-        icon.color = c;
-        isCardInitialized = false;
+        cardInstance = new CardInstance(pos, cardData, type, parent);
+        UpdateUI();
     }
 
-    public IEnumerator Activate(Vector2Int dir)
+    public void UpdateUI()
+    {
+        visibility = true;
+        icon.sprite = cardInstance.card.icon;
+        var c = cardInstance.entityType == EntityType.P ? Color.white : Color.red;
+        c.a = icon.color.a;
+        icon.color = c;
+
+        int intensity = cardInstance.intensity;
+        if (intensity == 0)
+        {
+            intensityText.enabled = false;
+        }
+        else
+        {
+            intensityText.enabled = true;
+            intensityText.text = intensity.ToString();
+        }
+    }
+
+    private void ActivationAnim(Vector2Int dir)
+    {
+        SetArrowDir(dir);
+
+        currentFadeTween = highlight.DOFade(0, 1).From(1).SetLink(gameObject);
+    }
+
+    private void SetArrowDir(Vector2Int dir)
     {
         float r;
         if (dir == Vector2Int.right)
@@ -127,49 +132,17 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         else
             r = -90;
         highlight.transform.rotation = Quaternion.Euler(0, 0, r);
-
-        currentFadeTween = highlight.DOFade(0, 1).From(1).SetLink(gameObject);
-        var battleground = parent.battleground;
-        if (cardData == null)
-            yield break;
-        Entity[] es = battleground.es;
-        if (type == EntityType.E)
-            es = new Entity[] { es[1], es[0] };
-
-        yield return cardData.OnActivate(es, parent.slotCount, dir, intensity);
     }
 
-    public IEnumerator InitializeCard(int slotCount)
+    public void RotationAnim(Rotation r)
     {
-        var battleground = parent.battleground;
-        if (cardData == null)
-            yield break;
-        Entity[] es = battleground.es;
-        if (type == EntityType.E)
-            es = new Entity[] { es[1], es[0] };
+        Vector2Int dir = parent.currentDir;
+        SetArrowDir(dir);
 
-        yield return cardData.OnInitialize(es, slotCount, intensity);
-    }
-
-    public IEnumerator StartCard(int slotCount)
-    {
-        var battleground = parent.battleground;
-        if (cardData == null)
-            yield break;
-        Entity[] es = battleground.es;
-        if (type == EntityType.E)
-            es = new Entity[] { es[1], es[0] };
-
-        yield return cardData.OnStart(es, slotCount, intensity);
-    }
-
-    public IEnumerator RotateAnim(Rotation r)
-    {
         highlight.transform.DORotate(new Vector3(0, 0, highlight.transform.rotation.eulerAngles.z + (r.ToFloat() * Mathf.Rad2Deg)), 1).SetEase(Ease.OutBack).SetLink(gameObject);
         if (currentFadeTween != null && currentFadeTween.IsActive())
             currentFadeTween.Kill();
         currentFadeTween = highlight.DOFade(0, 2).From(1).SetLink(gameObject);
-        yield return new WaitForSeconds(0.5f);
     }
 
     public IEnumerator ApplyFieldRotate()
@@ -197,60 +170,44 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         {
             if (parent.currentDir == Vector2Int.right)
             {
-                var query = new Query(new RotateDir(Rotation.m90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.m90);
             }
             else if (parent.currentDir == Vector2Int.up)
             {
-                var query = new Query(new RotateDir(Rotation.p90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.p90);
             }
         }
         else if (fieldType == 3)
         {
             if (parent.currentDir == Vector2Int.right)
             {
-                var query = new Query(new RotateDir(Rotation.p90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.p90);
             }
             else if (parent.currentDir == Vector2Int.down)
             {
-                var query = new Query(new RotateDir(Rotation.m90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.m90);
             }
         }
         else if (fieldType == 4)
         {
             if (parent.currentDir == Vector2Int.left)
             {
-                var query = new Query(new RotateDir(Rotation.m90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.m90);
             }
             else if (parent.currentDir == Vector2Int.down)
             {
-                var query = new Query(new RotateDir(Rotation.p90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.p90);
             }
         }
         else if (fieldType == 5)
         {
             if (parent.currentDir == Vector2Int.left)
             {
-                var query = new Query(new RotateDir(Rotation.p90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.p90);
             }
             else if (parent.currentDir == Vector2Int.up)
             {
-                var query = new Query(new RotateDir(Rotation.m90));
-                int slotCount = parent.slotCount;
-                yield return query.Process($"S{slotCount:00}Rotate");
+                yield return RotationProcess(Rotation.m90);
             }
         }
         else if (fieldType == 6)
@@ -265,6 +222,16 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         yield break;
     }
 
+    IEnumerator RotationProcess(Rotation r)
+    {
+        var act = new Rotate("ROT", r);
+
+        RotationAnim(r);
+        yield return new WaitForSeconds(0.5f);
+
+        yield return act.Invoke(systemInstance);
+    }
+
     public void OnDeselect()
     {
 
@@ -273,5 +240,32 @@ public class CardFieldItem : MonoBehaviour, ISelectable
     public void OnSelect()
     {
 
+    }
+
+    //-- Game Logic --//
+    public IEnumerator Activate(Vector2Int dir)
+    {
+        ActivationAnim(dir);
+
+        if (cardInstance == null)
+            yield break;
+
+        yield return cardInstance.Activate(dir);
+    }
+
+    public IEnumerator CardInitialize()
+    {
+        if (cardInstance == null)
+            yield break;
+
+        yield return cardInstance.Initialize();
+    }
+
+    public IEnumerator CardStart()
+    {
+        if (cardInstance == null)
+            yield break;
+
+        yield return cardInstance.Start();
     }
 }
