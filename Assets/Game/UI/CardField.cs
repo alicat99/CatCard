@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Act;
+using ActSystem;
 
 public class CardField : MonoBehaviour
 {
@@ -20,6 +20,8 @@ public class CardField : MonoBehaviour
     public Vector2Int currentPos;
     public CardFieldItem currentSlot { get => GetItem(currentPos); }
     public bool isRunning { get; private set; }
+    public int slotCounter { get; private set; }
+    public int cardCounter { get; private set; }
 
     const int CARD_INVOKE_COUNT = 10;
 
@@ -38,6 +40,9 @@ public class CardField : MonoBehaviour
             }
         }
         RandomFill();
+
+        slotCounter = 0;
+        cardCounter = 0;
 
         CardSystem.Reset();
     }
@@ -82,9 +87,12 @@ public class CardField : MonoBehaviour
             if (NotInField())
                 break;
 
+            ++slotCounter;
             var s = currentSlot;
             var lastDir = currentDir;
             CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
+            if (s.cardInstance != null)
+                ++cardCounter;
             yield return s.Activate(lastDir);
             if (NotInField())
                 break;
@@ -174,7 +182,7 @@ public class CardField : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                if (field[i, j].cardInstance == null && Random.value < 0.5f)
+                if (field[i, j].cardInstance == null && Random.value < 0.3f)
                 {
                     SetCard(i, j, GameManager.Instance.card.GetRandomCard(), EntityType.E);
                 }

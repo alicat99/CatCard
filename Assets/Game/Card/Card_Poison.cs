@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Act;
+using ActSystem;
 
 public class Card_Poison : CardData
 {
@@ -12,7 +12,7 @@ public class Card_Poison : CardData
             "A/DEL", act => ((Del)act).target == instance,
             act => OnTrigger(instance));
 
-        Act.Act act = new AddTrigger("TRG", trigger);
+        Act act = new AddTrigger("TRG", trigger);
 
         yield return act.Invoke(instance);
     }
@@ -21,7 +21,7 @@ public class Card_Poison : CardData
     {
         if (instance.intensity > 0)
         {
-            Act.Act act = new Remain("REM", instance, true);
+            Act act = new Remain("REM", instance, true);
 
             var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "preservation", 0);
             act.AddEffect(effect);
@@ -39,7 +39,7 @@ public class Card_Poison : CardData
     private IEnumerator OnTrigger(CardInstance instance)
     {
         Entity target = instance.field.GetEntity(instance.entityType);
-        var act = new AddHealth("ATK", -1, target);
+        var act = new AddHealth("ATK", -2, target);
 
         var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Attack", "attack", -act.amount);
         act.AddEffect(effect);

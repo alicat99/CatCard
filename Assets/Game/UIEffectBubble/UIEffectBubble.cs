@@ -108,7 +108,6 @@ public class UIEffectBubble : MonoBehaviour
 
     public void AddDuration(float t = 0.5f)
     {
-        Debug.Log(duration);
         duration += t;
     }
 

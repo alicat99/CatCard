@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
-using Act;
+using ActSystem;
 
 public class CardFieldItem : MonoBehaviour, ISelectable
 {

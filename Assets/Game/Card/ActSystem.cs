@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Act
+namespace ActSystem
 {
     public abstract class Act
     {

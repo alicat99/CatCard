@@ -3,6 +3,8 @@
 # 태그는 3글자씩, "/"으로 구분
 ex) A/DEL/SYS
 
+# 시스템 태그는 act가 null일 수도 있음
+
 # 태그 목록
 
 INI: Initialize
@@ -16,6 +18,8 @@ ROT: Rotation
 
 
 ATK: Attack
+
+REG: Regen
 
 TRG: AddTrigger
 
