@@ -20,9 +20,9 @@ public class BattlegroundUI : MonoBehaviour
     private void Start()
     {
         es = new Entity[2];
-        es[0] = new Entity(maxHealth: 5, entityType: EntityType.P);
+        es[0] = new Entity(maxHealth: 10, entityType: EntityType.P);
         es[0].onValueUpdate.AddListener(UpdateUI);
-        es[1] = new Entity(maxHealth: 5, entityType: EntityType.E);
+        es[1] = new Entity(maxHealth: 10, entityType: EntityType.E);
         es[1].onValueUpdate.AddListener(UpdateUI);
         UpdateUI();
     }

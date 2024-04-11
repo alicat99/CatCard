@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50c8f1f90b53c914a87157b3fb4dd9c6, type: 3}
-  m_Name: Card_AttackUp
+  m_Script: {fileID: 11500000, guid: eb98e83f1bfa5f7499854feb68182b28, type: 3}
+  m_Name: Card_Flip
   m_EditorClassIdentifier: 
-  icon: {fileID: 252699263996755252, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
-  cardName: card_attackup_name
-  description: card_attackup_desc
+  icon: {fileID: -5366068984163351596, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
+  cardName: card_flip_name
+  description: card_flip_desc
   intensity: 1

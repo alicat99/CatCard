@@ -50,14 +50,16 @@ namespace ActSystem
 
     public class Trigger
     {
+        public readonly CardInstance instance;
         public readonly string required;
         public readonly Func<Act, bool> requiredCondition;
         public readonly string end;
         public readonly Func<Act, bool> endCondition;
         public readonly Func<Act, IEnumerator> onTrigger;
 
-        public Trigger(string required, Func<Act, bool> requiredCondition, string end, Func<Act, bool> endCondition, Func<Act, IEnumerator> onTrigger)
+        public Trigger(CardInstance instance, string required, Func<Act, bool> requiredCondition, string end, Func<Act, bool> endCondition, Func<Act, IEnumerator> onTrigger)
         {
+            this.instance = instance;
             this.required = required;
             this.requiredCondition = requiredCondition;
             this.end = end;
@@ -105,7 +107,7 @@ namespace ActSystem
             for (int i = 0; i < triggers.Count; i++)
             {
                 Trigger trigger = triggers[i];
-                if (TestTrigger(triggerWord, trigger.required) && trigger.requiredCondition(act))
+                if (trigger.instance.isAlive && TestTrigger(triggerWord, trigger.required) && (trigger.requiredCondition == null || trigger.requiredCondition(act)))
                 {
                     if (triggerCount <= 0)
                     {
@@ -118,16 +120,8 @@ namespace ActSystem
                     yield return trigger.onTrigger(act);
                 }
 
-                if (TestTrigger(triggerWord, trigger.end) && trigger.endCondition(act))
+                if (!trigger.instance.isAlive || (TestTrigger(triggerWord, trigger.end) && (trigger.endCondition == null || trigger.endCondition(act))))
                 {
-                    if (triggerCount <= 0)
-                    {
-                        string content = Utils.GetLocalizedString("trigger_excution_reached_maximum");
-                        GameManager.Instance.card.field.Alert(content);
-                        yield break;
-                    }
-                    triggerCount -= 1;
-
                     triggers.RemoveAt(i);
                     i -= 1;
                 }
@@ -214,8 +208,9 @@ namespace ActSystem
 
         protected override void Activate()
         {
-            var item = instance.field.GetItem(instance.pos);
+            var item = instance.field.GetItem(target.pos);
             item.SetData(null, EntityType.P);
+            instance.isAlive = false;
         }
     }
 

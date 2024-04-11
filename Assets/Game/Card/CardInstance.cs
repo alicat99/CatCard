@@ -11,6 +11,7 @@ public class CardInstance
     public EntityType entityType;
     public bool isInitialized;
     public bool isRemaining;
+    public bool isAlive;
 
     public CardInstance(Vector2Int pos, CardData cardData, EntityType entityType, CardField field)
     {
@@ -21,6 +22,7 @@ public class CardInstance
         this.field = field;
         isInitialized = false;
         isRemaining = false;
+        isAlive = true;
     }
 
     public IEnumerator Activate(Vector2Int dir)

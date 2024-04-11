@@ -11,13 +11,14 @@ public class Card_AttackUp : CardData
         int currentSlot = instance.field.slotCounter;
 
         var trigger = new Trigger(
+            instance,
             "B/ATK", act => field.slotCounter == currentSlot + 1,
-            "_", act => field.slotCounter > currentSlot,
-            act => OnTrigger(act));
+            "A/END", act => true,
+            act => OnTrigger(act, instance.intensity));
 
         Act act = new AddTrigger("TRG", trigger);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "magic", 0);
+        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "magic", instance.intensity);
         act.AddEffect(effect);
 
         yield return new WaitForSeconds(0.5f);
@@ -25,11 +26,11 @@ public class Card_AttackUp : CardData
         yield return act.Invoke(instance);
     }
 
-    private IEnumerator OnTrigger(Act act)
+    private IEnumerator OnTrigger(Act act, int intensity)
     {
         AddHealth addHealth = (AddHealth)act;
         int a = addHealth.amount;
-        a = a > 0 ? a + 1 : a - 1;
+        a = a > 0 ? a + intensity : a - intensity;
         addHealth.amount = a;
 
         if (act.TryGetEffect(out var effect))

@@ -89,11 +89,10 @@ public class CardField : MonoBehaviour
 
             ++slotCounter;
             var s = currentSlot;
-            var lastDir = currentDir;
             CardSystem.ResetTriggerCount(CARD_INVOKE_COUNT);
             if (s.cardInstance != null)
                 ++cardCounter;
-            yield return s.Activate(lastDir);
+            yield return s.Activate(currentDir);
             if (NotInField())
                 break;
 
@@ -103,7 +102,7 @@ public class CardField : MonoBehaviour
 
             yield return w;
 
-            currentPos += new Vector2Int(-currentDir[1], currentDir[0]);
+            currentPos = AddDirToPos(currentPos, currentDir);
         }
         if (i == 25)
         {
@@ -173,6 +172,11 @@ public class CardField : MonoBehaviour
     public void Alert(string content)
     {
         FloatingTextManager.Print(content, new Vector2(0, 500), Color.white);
+    }
+
+    public static Vector2Int AddDirToPos(Vector2Int pos, Vector2Int dir)
+    {
+        return new Vector2Int(pos.x - dir.y, pos.y + dir.x);
     }
 
     //temp

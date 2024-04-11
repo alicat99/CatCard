@@ -71,6 +71,30 @@ MonoBehaviour:
     m_Key: trigger_excution_reached_maximum
     m_Metadata:
       m_Items: []
+  - m_Id: 51241290255478784
+    m_Key: card_flip_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51241335927255040
+    m_Key: card_flip_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51245298219134976
+    m_Key: card_increase_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51245337167441920
+    m_Key: card_increase_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51251501477310464
+    m_Key: card_bomb_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51251531399475200
+    m_Key: card_bomb_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
