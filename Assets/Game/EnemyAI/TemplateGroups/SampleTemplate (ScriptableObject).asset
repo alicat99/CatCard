@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718037dadcc2e474ea7500d716fcd377, type: 3}
+  m_Name: SampleTemplate (ScriptableObject)
+  m_EditorClassIdentifier: 
+  targetPath: Assets/Game/EnemyAI/TemplateGroups/SampleTemplate
+  data:
+  - {fileID: 11400000, guid: 8a07402386a3e2f4280ccdd5b4d5025a, type: 2}
+  - {fileID: 11400000, guid: a2218a20c8f12b147ac5148cf5c6350a, type: 2}
+  - {fileID: 11400000, guid: 8516c258df74eda4f9a1b1f03c54a8e8, type: 2}
+  - {fileID: 11400000, guid: 06e29581880c02e47b2e965b39077811, type: 2}
+  - {fileID: 11400000, guid: b600c05ae8ac25543907e70b9765b5b5, type: 2}
+  - {fileID: 11400000, guid: c4541afc724e89645af84a006da26c80, type: 2}
+  - {fileID: 11400000, guid: 2c36102d655280c499d6adb122ff7f98, type: 2}
+  - {fileID: 11400000, guid: 50b73ddf7bf76b14ca83e595cfc936f6, type: 2}
+  - {fileID: 11400000, guid: 815c70f451928d94584f17061a251337, type: 2}
+  - {fileID: 11400000, guid: 33ee353262a419a41915529a17cb0544, type: 2}
+  - {fileID: 11400000, guid: 8b8a00830d7e27445b7000269e3a8297, type: 2}
+  - {fileID: 11400000, guid: 22d195e1a814d9b4b87e6cfc92754fb5, type: 2}
+  - {fileID: 11400000, guid: 97c895cd5e6beaa42b744230376627da, type: 2}
+  - {fileID: 11400000, guid: b227725ffc356b9468b066edcc636b82, type: 2}
+  - {fileID: 11400000, guid: a91cd9a91ae937342a12aa6ea250d248, type: 2}
+  - {fileID: 11400000, guid: 8c3adc849bf88d14aabcec726a48ca24, type: 2}

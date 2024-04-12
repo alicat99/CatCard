@@ -182,14 +182,33 @@ public class CardField : MonoBehaviour
     //temp
     private void RandomFill()
     {
+        CardData[,] data = new CardData[3, 3];
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (field[i, j].cardInstance == null && Random.value < 0.3f)
-                {
-                    SetCard(i, j, GameManager.Instance.card.GetRandomCard(), EntityType.E);
-                }
+                var card = field[i, j].cardInstance?.card;
+                data[i, j] = card;
+            }
+        }
+
+        CardManager cardManager = GameManager.Instance.card;
+        for (int i = 0; i < 6; i++)
+        {
+            var template = cardManager.GetRandomTempate();
+            if (template.IsValid(data))
+            {
+                template.SetCard(data);
+                i++;
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (field[i, j].cardInstance != null) continue;
+                field[i, j].SetData(data[i, j], EntityType.E);
             }
         }
     }

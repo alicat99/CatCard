@@ -10,7 +10,7 @@ public class Card_Bomb : CardData
         var identity = instance.field.GetEntity(instance.entityType);
         var trigger = new Trigger(
             instance,
-            "A/ATK", act => ((AddHealth)act).target == identity && -((AddHealth)act).amount >= 2,
+            "A/ATK", act => ((AddHealth)act).target == identity,
             "A/END", act => true,
             act => OnTrigger(instance));
 

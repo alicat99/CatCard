@@ -21,9 +21,19 @@ public class CardManager : MonoBehaviour
     CardData[] cardDatas;
 
     //temp
+    [SerializeField]
+    ScriptableObjectList templates;
+
+    //temp
     public CardData GetRandomCard()
     {
         return cardDatas[Random.Range(0, cardDatas.Length)];
+    }
+
+    //temp
+    public ICardTemplate GetRandomTempate()
+    {
+        return templates.data[Random.Range(0, templates.data.Length)] as ICardTemplate;
     }
 
     public void Initialize()

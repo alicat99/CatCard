@@ -83,7 +83,7 @@ public class CardFieldItem : MonoBehaviour, ISelectable
     {
         if (cardData == null)
         {
-            cardInstance = null;
+            cardInstance = null; 
             visibility = false;
             intensityText.enabled = false;
             return;
