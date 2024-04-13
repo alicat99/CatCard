@@ -50,21 +50,34 @@ namespace ActSystem
 
     public class Trigger
     {
-        public readonly CardInstance instance;
         public readonly string required;
         public readonly Func<Act, bool> requiredCondition;
         public readonly string end;
         public readonly Func<Act, bool> endCondition;
         public readonly Func<Act, IEnumerator> onTrigger;
 
-        public Trigger(CardInstance instance, string required, Func<Act, bool> requiredCondition, string end, Func<Act, bool> endCondition, Func<Act, IEnumerator> onTrigger)
+        private bool useInstance = false;
+        private CardInstance instance;
+
+        public Trigger(string required, Func<Act, bool> requiredCondition, string end, Func<Act, bool> endCondition, Func<Act, IEnumerator> onTrigger)
         {
-            this.instance = instance;
             this.required = required;
             this.requiredCondition = requiredCondition;
             this.end = end;
             this.endCondition = endCondition;
             this.onTrigger = onTrigger;
+        }
+
+        public Trigger SetLink(CardInstance instance)
+        {
+            this.instance = instance;
+            useInstance = true;
+            return this;
+        }
+
+        public bool IsAlive()
+        {
+            return !useInstance || instance.isAlive;
         }
     }
 
@@ -107,7 +120,7 @@ namespace ActSystem
             for (int i = 0; i < triggers.Count; i++)
             {
                 Trigger trigger = triggers[i];
-                if (trigger.instance.isAlive && TestTrigger(triggerWord, trigger.required) && (trigger.requiredCondition == null || trigger.requiredCondition(act)))
+                if (trigger.IsAlive() && TestTrigger(triggerWord, trigger.required) && (trigger.requiredCondition == null || trigger.requiredCondition(act)))
                 {
                     if (triggerCount <= 0)
                     {
@@ -120,7 +133,7 @@ namespace ActSystem
                     yield return trigger.onTrigger(act);
                 }
 
-                if (!trigger.instance.isAlive || (TestTrigger(triggerWord, trigger.end) && (trigger.endCondition == null || trigger.endCondition(act))))
+                if (triggers.Contains(trigger) && !trigger.IsAlive() || (TestTrigger(triggerWord, trigger.end) && (trigger.endCondition == null || trigger.endCondition(act))))
                 {
                     triggers.RemoveAt(i);
                     i -= 1;

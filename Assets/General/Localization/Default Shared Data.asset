@@ -95,6 +95,22 @@ MonoBehaviour:
     m_Key: card_bomb_desc
     m_Metadata:
       m_Items: []
+  - m_Id: 52570774665605120
+    m_Key: card_purification_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52570790826258432
+    m_Key: card_purification_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52573483535872000
+    m_Key: card_thrash_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52573498383708160
+    m_Key: card_thrash_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -193,13 +193,13 @@ public class CardField : MonoBehaviour
         }
 
         CardManager cardManager = GameManager.Instance.card;
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 30; i++)
         {
             var template = cardManager.GetRandomTempate();
             if (template.IsValid(data))
             {
                 template.SetCard(data);
-                i++;
+                i += 15;
             }
         }
 

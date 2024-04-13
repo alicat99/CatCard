@@ -7,25 +7,37 @@ public class Card_Increase : CardData
 {
     public override IEnumerator OnActivate(CardInstance instance, Vector2Int dir)
     {
-        Vector2Int nextPos = CardField.AddDirToPos(instance.pos, dir);
-        var target = instance.field.GetItem(nextPos);
-        
-        if (target == null || target.cardInstance == null)
-            yield break;
+        bool useEffect = false;
 
-        int newIntensity = target.cardInstance.intensity;
-        if (newIntensity == 0)
-            yield break;
-        newIntensity += instance.intensity;
-        Act act = new SetIntensity("INT", target.cardInstance, newIntensity);
+        for (int i = 0; i < 2; i++)
+        {
+            int y = i * 2 - 1;
+            Vector2Int nextPos = CardField.AddDirToPos(instance.pos, new Vector2Int(0, y));
+            var target = instance.field.GetItem(nextPos);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "magic", instance.intensity);
-        act.AddEffect(effect);
+            if (target == null || target.cardInstance == null)
+                continue;
 
-        yield return new WaitForSeconds(0.5f);
+            int newIntensity = target.cardInstance.intensity;
+            if (newIntensity == 0)
+                continue;
+            newIntensity += instance.intensity;
+            Act act = new SetIntensity("INT", target.cardInstance, newIntensity);
 
-        yield return act.Invoke(instance);
+            if (!useEffect)
+            {
+                useEffect = true;
 
-        target.UpdateUI();
+                var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "magic", instance.intensity);
+                act.AddEffect(effect);
+
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            yield return act.Invoke(instance);
+
+            target.UpdateUI();
+        }
+        yield break;
     }
 }

@@ -8,7 +8,6 @@ public class Card_Poison : CardData
     public override IEnumerator OnInitialize(CardInstance instance)
     {
         var trigger = new Trigger(
-            instance,
             "A/DEL", act => ((Del)act).target == instance,
             "A/DEL", act => ((Del)act).target == instance,
             act => OnTrigger(instance));

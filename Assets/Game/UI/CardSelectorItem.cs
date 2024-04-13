@@ -15,6 +15,8 @@ public class CardSelectorItem : MonoBehaviour, ISelectable
     Image selectionHighlighter;
     [SerializeField]
     TextMeshProUGUI intensityText;
+    [SerializeField]
+    Image intensityTextBG;
     public CardSelector parent { get; private set; }
 
     private Button button;
@@ -77,11 +79,13 @@ public class CardSelectorItem : MonoBehaviour, ISelectable
         if (cardData.intensity == 0)
         {
             intensityText.enabled = false;
+            intensityTextBG.enabled = false;
         }
         else
         {
             intensityText.enabled = true;
             intensityText.text = cardData.intensity.ToString();
+            intensityTextBG.enabled = true;
         }
 
         if (currentTween != null && currentTween.IsActive())

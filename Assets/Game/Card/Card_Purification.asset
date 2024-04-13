@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03a794b3603a1e94db961b55227acc93, type: 3}
-  m_Name: W 5
+  m_Script: {fileID: 11500000, guid: e5ebb152477df4e42ae50b069eb076cf, type: 3}
+  m_Name: Card_Purification
   m_EditorClassIdentifier: 
-  card: {fileID: 11400000, guid: bd73397a418cc5b42942fb041fe2e0a5, type: 2}
+  icon: {fileID: -8397864690121878516, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
+  cardName: card_purification_name
+  description: card_purification_desc
+  intensity: -1

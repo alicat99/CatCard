@@ -9,10 +9,10 @@ public class Card_Bomb : CardData
     {
         var identity = instance.field.GetEntity(instance.entityType);
         var trigger = new Trigger(
-            instance,
             "A/ATK", act => ((AddHealth)act).target == identity,
             "A/END", act => true,
-            act => OnTrigger(instance));
+            act => OnTrigger(instance))
+            .SetLink(instance);
 
         Act act = new AddTrigger("TRG", trigger);
 

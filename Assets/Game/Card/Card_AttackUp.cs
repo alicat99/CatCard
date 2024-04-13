@@ -11,10 +11,10 @@ public class Card_AttackUp : CardData
         int currentSlot = instance.field.slotCounter;
 
         var trigger = new Trigger(
-            instance,
             "B/ATK", act => field.slotCounter == currentSlot + 1,
             "A/END", act => true,
-            act => OnTrigger(act, instance.intensity));
+            act => OnTrigger(act, instance.intensity))
+            .SetLink(instance);
 
         Act act = new AddTrigger("TRG", trigger);
 

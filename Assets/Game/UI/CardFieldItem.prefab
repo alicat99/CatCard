@@ -127,7 +127,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3079646798589776297}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -387,7 +387,6 @@ MonoBehaviour:
   - {fileID: 307221927988419025, guid: 285c2c766fe98464ebe0433770f5d4f7, type: 3}
   - {fileID: 6941171030629594897, guid: 285c2c766fe98464ebe0433770f5d4f7, type: 3}
   intensityText: {fileID: 3189138509363462737}
-  isCardInitialized: 0
 --- !u!114 &575396272763200847
 MonoBehaviour:
   m_ObjectHideFlags: 0
