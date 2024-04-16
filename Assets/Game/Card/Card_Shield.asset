@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03a794b3603a1e94db961b55227acc93, type: 3}
-  m_Name: W 6
+  m_Script: {fileID: 11500000, guid: c7436a91f4709604b93b96a14834c640, type: 3}
+  m_Name: Card_Shield
   m_EditorClassIdentifier: 
-  card: {fileID: 11400000, guid: 4b9ad2c9f6945c14cbd7bdfab6d2b9fd, type: 2}
+  icon: {fileID: -3899243560206508097, guid: 763a62fcb320c7e49b950f883ea92721, type: 3}
+  cardName: card_shield_name
+  description: card_shield_desc
+  intensity: 2

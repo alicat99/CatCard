@@ -111,6 +111,22 @@ MonoBehaviour:
     m_Key: card_thrash_desc
     m_Metadata:
       m_Items: []
+  - m_Id: 52830778643623936
+    m_Key: card_bleeding_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52830792384163840
+    m_Key: card_bleeding_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53246646649270272
+    m_Key: card_shield_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53246700353138688
+    m_Key: card_shield_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -5,6 +5,10 @@ using UnityEngine;
 public class GridCardTemplate : ScriptableObject, ICardTemplate
 {
     [SerializeField]
+    int weight;
+
+    [SerializeField]
+    [HideInInspector]
     List<CardData> data;
 
     public CardData this[int i, int j]
@@ -35,4 +39,6 @@ public class GridCardTemplate : ScriptableObject, ICardTemplate
             }
         }
     }
+
+    public int GetWeight() => weight;
 }

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a794b3603a1e94db961b55227acc93, type: 3}
   m_Name: W 1
   m_EditorClassIdentifier: 
+  weight: 3
   card: {fileID: 11400000, guid: 211f227dc9cbc1043b30a87b137e3bbd, type: 2}

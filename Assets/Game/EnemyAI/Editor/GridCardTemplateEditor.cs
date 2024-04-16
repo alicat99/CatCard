@@ -18,6 +18,8 @@ public class GridCardTemplateEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        base.OnInspectorGUI();
+
         serializedObject.Update();
 
         // Draw the grid for datas

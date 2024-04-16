@@ -111,6 +111,14 @@ public class UIEffectBubble : MonoBehaviour
         duration += t;
     }
 
+    public void Cancel()
+    {
+        descriptionText.text = Utils.GetLocalizedString("cancel", "EffectBubble");
+        float width = descriptionText.preferredWidth + 40;
+        descriptionBG.sizeDelta = new Vector2(width, descriptionBG.sizeDelta.y);
+        canvasGroup.DOFade(1, 0.5f).From(0f).SetLink(gameObject);
+    }
+
     private void OnDisable()
     {
         if (life != null)

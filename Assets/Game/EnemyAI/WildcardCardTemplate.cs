@@ -5,6 +5,9 @@ using UnityEngine;
 public class WildcardCardTemplate : ScriptableObject, ICardTemplate
 {
     [SerializeField]
+    int weight;
+
+    [SerializeField]
     private CardData card;
 
     public bool IsValid(CardData[,] field)
@@ -42,4 +45,6 @@ public class WildcardCardTemplate : ScriptableObject, ICardTemplate
             }
         }
     }
+
+    public int GetWeight() => weight;
 }

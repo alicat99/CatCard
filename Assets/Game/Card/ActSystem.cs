@@ -119,6 +119,9 @@ namespace ActSystem
         {
             for (int i = 0; i < triggers.Count; i++)
             {
+                if (act != null && act.cancel)
+                    yield break;
+
                 Trigger trigger = triggers[i];
                 if (trigger.IsAlive() && TestTrigger(triggerWord, trigger.required) && (trigger.requiredCondition == null || trigger.requiredCondition(act)))
                 {

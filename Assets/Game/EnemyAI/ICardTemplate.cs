@@ -8,4 +8,6 @@ public interface ICardTemplate
     public bool IsValid(CardData[,] field);
 
     public void SetCard(CardData[,] field);
+
+    public int GetWeight();
 }

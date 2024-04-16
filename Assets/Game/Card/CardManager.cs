@@ -33,7 +33,26 @@ public class CardManager : MonoBehaviour
     //temp
     public ICardTemplate GetRandomTempate()
     {
-        return templates.data[Random.Range(0, templates.data.Length)] as ICardTemplate;
+        int totalWeight = 0;
+        foreach (ICardTemplate item in templates.data)
+        {
+            totalWeight += item.GetWeight();
+        }
+
+        // 랜덤 가중치 생성
+        double randomWeight = Random.Range(0, totalWeight);
+
+        // 누적 가중치 합계를 사용하여 선택
+        double cumulativeWeight = 0;
+        foreach (ICardTemplate item in templates.data)
+        {
+            cumulativeWeight += item.GetWeight();
+            if (randomWeight < cumulativeWeight)
+            {
+                return item;
+            }
+        }
+        return templates.data[0] as ICardTemplate;
     }
 
     public void Initialize()

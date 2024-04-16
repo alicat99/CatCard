@@ -38,5 +38,9 @@ MonoBehaviour:
     m_Localized: PRESERVATION
     m_Metadata:
       m_Items: []
+  - m_Id: 22081851728506880
+    m_Localized: CANCELED
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

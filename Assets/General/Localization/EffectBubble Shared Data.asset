@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: preservation
     m_Metadata:
       m_Items: []
+  - m_Id: 22081851728506880
+    m_Key: cancel
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
