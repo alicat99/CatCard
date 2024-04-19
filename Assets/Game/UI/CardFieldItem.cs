@@ -16,6 +16,8 @@ public class CardFieldItem : MonoBehaviour, ISelectable
     Sprite[] sprites;
     [SerializeField]
     TextMeshProUGUI intensityText;
+    [SerializeField]
+    Image intensityTextBG;
 
     public CardField parent { get; private set; }
     public int fieldType { get; private set; }
@@ -86,6 +88,7 @@ public class CardFieldItem : MonoBehaviour, ISelectable
             cardInstance = null; 
             visibility = false;
             intensityText.enabled = false;
+            intensityTextBG.enabled = false;
             return;
         }
 
@@ -105,11 +108,13 @@ public class CardFieldItem : MonoBehaviour, ISelectable
         if (intensity == 0)
         {
             intensityText.enabled = false;
+            intensityTextBG.enabled = false;
         }
         else
         {
             intensityText.enabled = true;
             intensityText.text = intensity.ToString();
+            intensityTextBG.enabled = true;
         }
     }
 
