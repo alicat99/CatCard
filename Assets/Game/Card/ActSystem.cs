@@ -28,6 +28,7 @@ namespace ActSystem
                 yield break;
 
             Activate();
+
             yield return CardSystem.InvokeTrigger(this, "A/" + triggerWord);
         }
 

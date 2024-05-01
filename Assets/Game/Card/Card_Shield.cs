@@ -19,14 +19,21 @@ public class Card_Shield : CardData
 
     public override IEnumerator OnStart(CardInstance instance)
     {
-        Act act = new Remain("REM", instance, true);
+        if (instance.intensity > 0)
+        {
+            Act act = new Remain("REM", instance, true);
 
-        var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "preservation", 0);
-        act.AddEffect(effect);
+            var effect = GameManager.Instance.uiEffectBubble.PrintBySlot(instance.pos, "Magic", "preservation", 0);
+            act.AddEffect(effect);
 
-        yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
-        yield return act.Invoke(instance);
+            yield return act.Invoke(instance);
+
+            act = new SetIntensity("INT", instance, instance.intensity - 1);
+
+            yield return act.Invoke(instance);
+        }
     }
 
     private IEnumerator OnTrigger(CardInstance instance, AddHealth act)

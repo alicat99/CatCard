@@ -15,116 +15,120 @@ MonoBehaviour:
   m_TableCollectionName: Default
   m_TableCollectionNameGuidString: 43667fd4abd196f45ac9d1a602cada74
   m_Entries:
-  - m_Id: 148516286464
-    m_Key: check
+  - m_Id: 1236556492800
+    m_Key: card_attack_desc
     m_Metadata:
       m_Items: []
   - m_Id: 1165186215936
     m_Key: card_attack_name
     m_Metadata:
       m_Items: []
-  - m_Id: 1236556492800
-    m_Key: card_attack_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1299311669248
-    m_Key: card_regen_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1338733932544
-    m_Key: card_regen_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1801722930573312
-    m_Key: card_excution_reached_maximum
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1803374270001152
-    m_Key: turn_end
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2203165546164224
-    m_Key: card_rotate_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2203209485692928
-    m_Key: card_rotate_desc
+  - m_Id: 19816858274410496
+    m_Key: card_attackup_desc
     m_Metadata:
       m_Items: []
   - m_Id: 19814408675045376
     m_Key: card_attackup_name
     m_Metadata:
       m_Items: []
-  - m_Id: 19816858274410496
-    m_Key: card_attackup_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31142517546332160
-    m_Key: card_poison_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31142612039806976
-    m_Key: card_poison_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 42712662118936576
-    m_Key: trigger_excution_reached_maximum
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51241290255478784
-    m_Key: card_flip_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51241335927255040
-    m_Key: card_flip_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51245298219134976
-    m_Key: card_increase_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51245337167441920
-    m_Key: card_increase_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51251501477310464
-    m_Key: card_bomb_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51251531399475200
-    m_Key: card_bomb_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52570774665605120
-    m_Key: card_purification_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52570790826258432
-    m_Key: card_purification_desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52573483535872000
-    m_Key: card_thrash_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52573498383708160
-    m_Key: card_thrash_desc
+  - m_Id: 52830792384163840
+    m_Key: card_bleeding_desc
     m_Metadata:
       m_Items: []
   - m_Id: 52830778643623936
     m_Key: card_bleeding_name
     m_Metadata:
       m_Items: []
-  - m_Id: 52830792384163840
-    m_Key: card_bleeding_desc
+  - m_Id: 51251531399475200
+    m_Key: card_bomb_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51251501477310464
+    m_Key: card_bomb_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1801722930573312
+    m_Key: card_excution_reached_maximum
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51241335927255040
+    m_Key: card_flip_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51241290255478784
+    m_Key: card_flip_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51245337167441920
+    m_Key: card_increase_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51245298219134976
+    m_Key: card_increase_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31142612039806976
+    m_Key: card_poison_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31142517546332160
+    m_Key: card_poison_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52570790826258432
+    m_Key: card_purification_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52570774665605120
+    m_Key: card_purification_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1338733932544
+    m_Key: card_regen_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1299311669248
+    m_Key: card_regen_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2203209485692928
+    m_Key: card_rotate_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2203165546164224
+    m_Key: card_rotate_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53246700353138688
+    m_Key: card_shield_desc
     m_Metadata:
       m_Items: []
   - m_Id: 53246646649270272
     m_Key: card_shield_name
     m_Metadata:
       m_Items: []
-  - m_Id: 53246700353138688
-    m_Key: card_shield_desc
+  - m_Id: 52573498383708160
+    m_Key: card_thrash_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52573483535872000
+    m_Key: card_thrash_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55230362141503488
+    m_Key: check
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42712662118936576
+    m_Key: trigger_excution_reached_maximum
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1803374270001152
+    m_Key: turn_end
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55230611367047168
+    m_Key: final_attack
     m_Metadata:
       m_Items: []
   m_Metadata:

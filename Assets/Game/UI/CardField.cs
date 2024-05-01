@@ -22,6 +22,7 @@ public class CardField : MonoBehaviour
     public bool isRunning { get; private set; }
     public int slotCounter { get; private set; }
     public int cardCounter { get; private set; }
+    public Coroutine currentRunCoroutine;
 
     const int CARD_INVOKE_COUNT = 10;
 
@@ -54,7 +55,16 @@ public class CardField : MonoBehaviour
 
     public IEnumerator RunField()
     {
+        currentRunCoroutine = StartCoroutine(DoRunField());
+
+        yield return new WaitWhile(() => isRunning);
+    }
+
+    private IEnumerator DoRunField()
+    {
         isRunning = true;
+
+        yield return null;
 
         currentDir = Vector2Int.right;
         currentPos = Vector2Int.zero;
@@ -143,6 +153,7 @@ public class CardField : MonoBehaviour
         cardSelector.AddCard(0, GameManager.Instance.card.GetRandomCard());
 
         isRunning = false;
+        currentRunCoroutine = null;
 
         yield break;
     }
@@ -172,6 +183,15 @@ public class CardField : MonoBehaviour
     public void Alert(string content)
     {
         FloatingTextManager.Print(content, new Vector2(0, 500), Color.white);
+    }
+
+    public void StopExistingRunCoroutine()
+    {
+        if (currentRunCoroutine == null)
+            return;
+        StopCoroutine(currentRunCoroutine);
+        isRunning = false;
+        currentRunCoroutine = null;
     }
 
     public static Vector2Int AddDirToPos(Vector2Int pos, Vector2Int dir)

@@ -28,7 +28,7 @@ public class Card_Bomb : CardData
         {
             for (int j = -1; j <= 1; j++)
             {
-                if ((i == 0 && j == 0) || (i != 0 && j != 0))
+                if (i != 0 && j != 0)
                     continue;
 
                 var d = new Vector2Int(i, j);

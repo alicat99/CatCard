@@ -23,6 +23,8 @@ public class CardCheckButton : MonoBehaviour
     {
         button.enabled = false;
 
+        yield return null;
+
         yield return field.RunField();
 
         button.enabled = true;
